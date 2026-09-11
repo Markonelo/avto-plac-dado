@@ -294,7 +294,7 @@ export default function ContactHero() {
 
                   <button
                     type="submit"
-                    className="group mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-[0.625rem] bg-teal px-6 py-4.5 font-heading text-base font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-teal-dark"
+                    className="group mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-[0.625rem] bg-teal px-6 py-4.5 font-heading text-base font-semibold text-white transition-colors hover:bg-teal-dark"
                   >
                     {T.sendMessage[lang]}
                     <ArrowRight

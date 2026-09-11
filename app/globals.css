@@ -127,7 +127,6 @@ h1, h2, h3, h4, h5, h6 {
   }
   .btn-primary:hover {
     background: var(--color-teal-dark);
-    transform: translateY(-2px);
   }
 
   .btn-dark {
@@ -143,7 +142,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.85rem 1.7rem;
     transition: transform .2s ease, background .2s ease;
   }
-  .btn-dark:hover { background: #000; transform: translateY(-2px); }
+  .btn-dark:hover { background: #000; }
 
   .btn-ghost {
     display: inline-flex;
@@ -163,7 +162,6 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--color-teal);
     color: var(--color-teal-dark);
     background: #fff;
-    transform: translateY(-2px);
   }
 
   /* ── Glowing teal button (primary CTAs) ── */
@@ -185,7 +183,6 @@ h1, h2, h3, h4, h5, h6 {
     transition: transform .18s ease, background .25s ease;
   }
   .glow-btn:hover {
-    transform: translateY(-2px);
     background: var(--color-teal-dark);
   }
   .glow-btn:active,

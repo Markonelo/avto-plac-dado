@@ -65,7 +65,7 @@ export default function FinalCTA() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/cars"
-                className="group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 font-heading text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 font-heading text-sm font-semibold text-ink transition-colors hover:bg-cloud"
               >
                 {T.browse[lang]}
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-teal text-white">
