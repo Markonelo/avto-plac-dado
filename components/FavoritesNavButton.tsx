@@ -30,12 +30,12 @@ export default function FavoritesNavButton({
     <Link
       href="/favorites"
       aria-label={T.label[lang]}
-      className={`group relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors md:h-11 md:w-11 ${
+      className={`group relative flex h-10 w-10 items-center justify-center rounded-[0.625rem] border transition-colors duration-200 md:h-11 md:w-11 ${
         onDark
-          ? "border-white/20 bg-white/10 text-white hover:border-white/40"
+          ? "border-white/25 text-white/85 hover:border-white/45 hover:text-white"
           : active
-            ? "border-teal/50 bg-teal-soft text-teal-dark"
-            : "border-line bg-white/70 text-ink hover:border-teal/50 hover:text-teal-dark"
+            ? "border-teal/50 bg-teal/10 text-teal-dark"
+            : "border-line bg-white/70 text-ink-soft hover:border-teal/40 hover:text-teal-dark"
       } ${className}`}
     >
       <motion.span

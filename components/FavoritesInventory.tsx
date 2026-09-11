@@ -7,7 +7,6 @@ import { useFavorites } from "./FavoritesContext";
 import { useLang } from "./LanguageProvider";
 
 const T = {
-  eyebrow: { mk: "Вашата листа", en: "Your list" },
   heading: { mk: "Омилени возила", en: "Saved cars" },
   car: { mk: "возило", en: "car" },
   cars: { mk: "возила", en: "cars" },
@@ -38,10 +37,7 @@ export default function FavoritesInventory() {
       <div className="container-wide">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-lg border border-teal/40 px-4 py-1.5 font-heading text-[11px] font-medium uppercase tracking-[0.18em] text-teal-dark">
-            {T.eyebrow[lang]}
-          </span>
-          <h1 className="mt-4 font-heading text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+          <h1 className="font-heading text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             {T.heading[lang]}
           </h1>
           <p className="mt-4 font-body text-base leading-relaxed text-mute sm:text-lg">
