@@ -1,0 +1,16 @@
+/node_modules
+/.next/
+/out/
+/build
+.DS_Store
+*.pem
+npm-debug.log*
+dev.log
+*.log
+.vercel
+.env*
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Local tooling
+.claude/
