@@ -7,7 +7,7 @@ import { useLang } from "./LanguageProvider";
 const T = {
   heading: { mk: "Контактирајте нѐ", en: "Contact us" },
   copy: {
-    mk: "Дојдете да ги видите автомобилите во живо или јавете се во секое време. Со задоволство ќе одговориме на прашања, ќе закажеме тест возење или ќе ви помогнеме да го најдете вистинскиот автомобил.",
+    mk: "Дојдете да ги видите автомобилите во живо или јавете се во секое време. Со задоволство ќе одговориме на прашања, ќе закажеме тест возење или ќе ви помогнеме да го најдете вистинскиот автомобил.",
     en: "Come see the cars in person or reach out any time. We're happy to answer questions, arrange a test drive, or help you find the right car.",
   },
   getInTouch: { mk: "Стапи во контакт", en: "Get in touch" },
@@ -37,7 +37,11 @@ export default function Contact() {
               <h2 className="font-heading text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
                 {T.heading[lang]}
               </h2>
-              <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-mute sm:text-lg">
+              <p
+                className={`mt-5 max-w-xl font-body leading-relaxed text-mute ${
+                  lang === "mk" ? "text-base" : "text-base sm:text-lg"
+                }`}
+              >
                 {T.copy[lang]}
               </p>
 
