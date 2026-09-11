@@ -124,7 +124,11 @@ export function carDescription(car: Car, lang: Lang): string {
   const fuelMk = (FUEL_MK[car.fuel] ?? car.fuel).toLowerCase();
   const transMk = (TRANS_MK[car.transmission] ?? car.transmission).toLowerCase();
   const colorMk = (COLOR_MK[car.color] ?? car.color).toLowerCase();
-  const km = car.mileage.toLocaleString("mk-MK");
+  // Use "en-US" (deterministic comma grouping) rather than "mk-MK": the
+  // Macedonian locale's separator differs between Node's server ICU and the
+  // browser's ICU, which caused a React hydration mismatch. This also matches
+  // the "160,000" shown in the spec grid above the description.
+  const km = car.mileage.toLocaleString("en-US");
   const fsh = /full service history/i.test(car.description)
     ? " со целосна сервисна историја"
     : "";
