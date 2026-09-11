@@ -75,7 +75,7 @@ export default function CarsHero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.06, ease: "easeOut" }}
-              className="max-w-4xl font-heading text-[2.75rem] font-semibold leading-[1.03] tracking-tight text-ink sm:text-6xl lg:text-[4.5rem]"
+              className="max-w-4xl font-heading text-[2.6rem] font-semibold leading-[1.03] tracking-tight text-ink sm:text-6xl lg:text-[4rem]"
             >
               {T.headline1[lang]}
               <br />
@@ -130,7 +130,7 @@ export default function CarsHero() {
           <FallbackImage
             src="/cars-hero.png"
             alt="Avto Plac Dado inventory line-up"
-            className="pointer-events-none -mx-5 mb-0 mt-2 max-h-[44svh] w-[calc(100%+2.5rem)] max-w-none object-contain object-top sm:mt-3 sm:max-h-[52svh]"
+            className="pointer-events-none -mx-5 mb-0 mt-1 max-h-[44svh] w-[calc(100%+2.5rem)] max-w-none object-contain object-top sm:mt-1.5 sm:max-h-[52svh]"
           />
         </div>
       </div>
