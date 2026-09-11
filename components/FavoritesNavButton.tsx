@@ -33,9 +33,7 @@ export default function FavoritesNavButton({
       className={`group relative flex h-10 w-10 items-center justify-center rounded-[0.625rem] border transition-colors duration-200 md:h-11 md:w-11 ${
         onDark
           ? "border-white/25 text-white/85 hover:border-white/45 hover:text-white"
-          : active
-            ? "border-teal/50 bg-teal/10 text-teal-dark"
-            : "border-line bg-white/70 text-ink-soft hover:border-teal/40 hover:text-teal-dark"
+          : "border-line bg-white/70 text-ink-soft hover:border-teal/40 hover:text-teal-dark"
       } ${className}`}
     >
       <motion.span
@@ -43,7 +41,7 @@ export default function FavoritesNavButton({
         whileHover={reduce ? undefined : { scale: [1, 1.22, 0.94, 1.12, 1] }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
-        <Heart size={18} className={active ? "fill-current" : ""} />
+        <Heart size={18} className={active ? "fill-teal text-teal" : ""} />
       </motion.span>
 
       <AnimatePresence>
