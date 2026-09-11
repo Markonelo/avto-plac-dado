@@ -32,7 +32,7 @@ const REVIEWS: Review[] = [
   },
   {
     text: {
-      mk: "Без притисок и без изигрување. Ми го објаснија секој детаљ од автомобилот и трпеливо одговорија на сите мои прашања. Вака треба да изгледа купувањето автомобил.",
+      mk: "Без притисок и без изигрување. Ми го објаснија секој детал од автомобилот и трпеливо одговорија на сите мои прашања. Вака треба да изгледа купувањето автомобил.",
       en: "No pressure and no games. They walked me through every detail of the car and answered all of my questions patiently. This is exactly how buying a car should feel.",
     },
     name: "Elena Trajkovska",

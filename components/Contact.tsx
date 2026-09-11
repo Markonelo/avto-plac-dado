@@ -37,7 +37,7 @@ export default function Contact() {
               <h2 className="font-heading text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
                 {T.heading[lang]}
               </h2>
-              <p className="mt-5 max-w-md font-body text-base leading-relaxed text-mute sm:text-lg">
+              <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-mute sm:text-lg">
                 {T.copy[lang]}
               </p>
 
