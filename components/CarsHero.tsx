@@ -75,7 +75,7 @@ export default function CarsHero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.06, ease: "easeOut" }}
-              className="max-w-3xl font-heading text-[2.4rem] font-semibold leading-[1.03] tracking-tight text-ink sm:text-5xl lg:text-[3.6rem]"
+              className="max-w-4xl font-heading text-[2.75rem] font-semibold leading-[1.03] tracking-tight text-ink sm:text-6xl lg:text-[4.5rem]"
             >
               {T.headline1[lang]}
               <br />
