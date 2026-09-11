@@ -65,7 +65,7 @@ export default function FinalCTA() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/cars"
-                className="group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 font-heading text-sm font-semibold text-ink transition-colors hover:bg-cloud"
+                className="group inline-flex items-center gap-2.5 rounded-[0.625rem] bg-white px-6 py-3 font-heading text-sm font-semibold text-ink transition-colors hover:bg-cloud"
               >
                 {T.browse[lang]}
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-teal text-white">
@@ -74,7 +74,7 @@ export default function FinalCTA() {
               </Link>
               <Link
                 href="#contact"
-                className="group inline-flex items-center gap-2.5 rounded-full border border-white/60 px-6 py-3 font-heading text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                className="group inline-flex items-center gap-2.5 rounded-[0.625rem] border border-white/60 px-6 py-3 font-heading text-sm font-semibold text-white transition-colors hover:bg-white/10"
               >
                 {T.contact[lang]}
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-teal">
