@@ -33,7 +33,7 @@ export default function FavoritesInventory() {
     .filter((c): c is (typeof CARS)[number] => Boolean(c));
 
   return (
-    <section className="section-padding bg-cloud pt-28 sm:pt-32">
+    <section className="section-padding bg-cloud pt-36 sm:pt-44">
       <div className="container-wide">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
