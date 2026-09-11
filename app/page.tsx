@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import SearchFilter from "@/components/SearchFilter";
-import WhyUs from "@/components/WhyUs";
 import BrandsMarquee from "@/components/BrandsMarquee";
+import About from "@/components/About";
 import CarsShowcase from "@/components/CarsShowcase";
 import Testimonials from "@/components/Testimonials";
 import BrandsCard from "@/components/BrandsCard";
@@ -15,8 +15,8 @@ export default function Home() {
     <>
       <Hero />
       <SearchFilter />
-      <WhyUs />
       <BrandsMarquee />
+      <About />
       <CarsShowcase />
       <Testimonials />
       <BrandsCard />
