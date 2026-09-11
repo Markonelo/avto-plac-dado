@@ -69,11 +69,11 @@ export default function LangSwitch({
         className={`flex h-10 w-10 items-center justify-center rounded-[0.625rem] border transition-colors duration-200 md:h-11 md:w-11 ${
           onDark
             ? open
-              ? "border-white/40 bg-white/15 text-white"
-              : "border-white/25 text-white/85 hover:border-white/45 hover:text-white"
+              ? "border-white/25 text-white"
+              : "border-white/25 text-white/85 hover:text-white"
             : open
-              ? "border-teal/50 bg-teal/10 text-teal-dark"
-              : "border-line bg-white/70 text-ink-soft hover:border-teal/40 hover:text-teal-dark"
+              ? "border-line bg-white/70 text-teal-dark"
+              : "border-line bg-white/70 text-ink-soft hover:text-teal-dark"
         }`}
       >
         <Languages size={18} />
