@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
 import { Heart, Car as CarIcon, Calendar, Gauge, Fuel, Settings2, ArrowRight } from "lucide-react";
 import type { Car } from "@/lib/cars";
 import { BRAND_META } from "@/lib/cars";
 import FallbackImage from "./FallbackImage";
 import { useLang } from "./LanguageProvider";
+import { useFavorites } from "./FavoritesContext";
 import { tFuel, tTrans, tBody } from "@/lib/i18n";
 
 const T = {
@@ -21,7 +21,8 @@ const T = {
 // The whole card links to the car's detail page.
 export default function CarCard({ car }: { car: Car }) {
   const { lang } = useLang();
-  const [fav, setFav] = useState(false);
+  const { has, toggle } = useFavorites();
+  const fav = has(car.id);
   const brand = BRAND_META[car.brandSlug];
 
   const stats = [
@@ -57,7 +58,7 @@ export default function CarCard({ car }: { car: Car }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setFav((v) => !v);
+              toggle(car.id);
             }}
             aria-label={fav ? T.removeFav[lang] : T.addFav[lang]}
             aria-pressed={fav}

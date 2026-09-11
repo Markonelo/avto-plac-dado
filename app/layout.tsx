@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import SmoothScroll from "@/components/SmoothScroll";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import { FavoritesProvider } from "@/components/FavoritesContext";
 import { buildMeta, localBusinessSchema } from "@/lib/seo";
 
 export const metadata: Metadata = buildMeta();
@@ -31,10 +32,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="flex min-h-svh flex-col font-body antialiased">
         <LanguageProvider>
-          <SmoothScroll>
-            <Header />
-            <main className="flex-1">{children}</main>
-          </SmoothScroll>
+          <FavoritesProvider>
+            <SmoothScroll>
+              <Header />
+              <main className="flex-1">{children}</main>
+            </SmoothScroll>
+          </FavoritesProvider>
         </LanguageProvider>
       </body>
     </html>

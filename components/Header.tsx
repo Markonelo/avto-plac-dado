@@ -8,6 +8,7 @@ import { Phone, MapPin, Clock, Mail, X } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { useLang } from "./LanguageProvider";
 import LangSwitch from "./LangSwitch";
+import FavoritesNavButton from "./FavoritesNavButton";
 
 const T = {
   nav: {
@@ -114,6 +115,7 @@ export default function Header() {
 
         {/* Right actions */}
         <div className="flex items-center gap-2">
+          <FavoritesNavButton onDark={onDarkHero} />
           <LangSwitch onDark={onDarkHero} />
           <a href={SITE.phoneHref} className="glow-btn hidden !rounded-[0.625rem] !px-6 !py-3 text-[15px] md:inline-flex">
             <Phone size={17} /> {T.callUs[lang]}
