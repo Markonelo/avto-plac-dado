@@ -192,7 +192,7 @@ export function localBusinessSchema() {
       "Пелагониски регион",
     ],
     hasMap: `https://maps.google.com/?q=${GEO.latitude},${GEO.longitude}`,
-    sameAs: [SITE.facebook, SITE.instagram].filter(Boolean),
+    sameAs: [SITE.facebook].filter(Boolean),
   };
 }
 

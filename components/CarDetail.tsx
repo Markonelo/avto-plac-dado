@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -102,32 +102,49 @@ export default function CarDetail({
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const [zoom, setZoom] = useState(1);
+  // Point the image zooms toward (defaults to centre until the user clicks).
+  const [origin, setOrigin] = useState("50% 50%");
   const brand = BRAND_META[car.brandSlug];
   const total = car.images.length;
 
+  // Throttle photo navigation: a single physical click can register more than
+  // once, and because the swap is instant that skips photos (1 → 3 → 5). Ignore
+  // any nav that lands within the cooldown of the previous one, so one click
+  // always moves exactly one photo.
+  const lastNav = useRef(0);
+  const NAV_COOLDOWN = 350; // ms between accepted photo changes
   const go = (dir: 1 | -1) => {
+    const now = Date.now();
+    if (now - lastNav.current < NAV_COOLDOWN) return;
+    lastNav.current = now;
     setActive((i) => (i + dir + total) % total);
     setZoom(1);
+    setOrigin("50% 50%");
   };
   const openLightbox = () => {
     setZoom(1);
+    setOrigin("50% 50%");
     setLightbox(true);
   };
   const zoomIn = () => setZoom((z) => Math.min(z + 0.5, 4));
   const zoomOut = () => setZoom((z) => Math.max(z - 0.5, 1));
+
+  // Preload the whole gallery up-front so flicking through photos is instant —
+  // no blank frame while the next file decodes (which reads as "skipping").
+  useEffect(() => {
+    car.images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [car.images]);
 
   // Fullscreen viewer: lock scroll + wire up keyboard (Esc / ← / →).
   useEffect(() => {
     if (!lightbox) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightbox(false);
-      else if (e.key === "ArrowLeft") {
-        setActive((i) => (i - 1 + total) % total);
-        setZoom(1);
-      } else if (e.key === "ArrowRight") {
-        setActive((i) => (i + 1 + total) % total);
-        setZoom(1);
-      }
+      else if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "ArrowRight") go(1);
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -203,13 +220,13 @@ export default function CarDetail({
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="mx-auto mt-4 max-w-4xl"
+              className="mx-auto mt-4 max-w-5xl"
             >
               <div className="rounded-[1rem] border border-line bg-cloud-2 p-2.5 shadow-[0_24px_60px_-28px_rgba(17,19,24,0.35)] sm:p-3">
                 {/* Main photo */}
                 <div
                   onClick={openLightbox}
-                  className="group relative h-[50vh] max-h-[540px] min-h-[17rem] cursor-zoom-in overflow-hidden rounded-[0.7rem] bg-[radial-gradient(120%_120%_at_50%_20%,#f4f7f8_0%,#e2e9ec_100%)]"
+                  className="group relative aspect-[16/9] cursor-zoom-in overflow-hidden rounded-[0.7rem] bg-[radial-gradient(120%_120%_at_50%_20%,#f4f7f8_0%,#e2e9ec_100%)]"
                 >
                   <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-mute">
                     <CarIcon size={52} strokeWidth={1} className="opacity-25" />
@@ -219,24 +236,10 @@ export default function CarDetail({
                   </div>
 
                   <FallbackImage
-                    key={car.images[active]}
                     src={car.images[active]}
                     alt={`${car.name} — photo ${active + 1}`}
                     className="absolute inset-0 z-[1] h-full w-full object-cover"
                   />
-
-                  {/* Brand logo chip */}
-                  <span
-                    className="absolute left-3 top-3 z-10 flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full border border-ink/10 bg-white/90 shadow-sm backdrop-blur-sm"
-                    title={brand?.name}
-                  >
-                    <FallbackImage
-                      src={`/brands/${car.brandSlug}.png`}
-                      alt={`${brand?.name} logo`}
-                      className="h-9 w-9 object-contain"
-                      style={{ transform: `scale(${brand?.scale ?? 1})` }}
-                    />
-                  </span>
 
                   {/* Fullscreen hint — appears on hover */}
                   <span className="pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-lg bg-ink/70 px-2.5 py-1.5 font-heading text-[11px] font-medium text-white opacity-0 shadow-sm backdrop-blur-sm transition-opacity group-hover:opacity-100">
@@ -259,7 +262,7 @@ export default function CarDetail({
                           go(-1);
                         }}
                         aria-label={T.prevPhoto[lang]}
-                        className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/85 text-ink opacity-0 shadow-md backdrop-blur-sm transition-all hover:border-teal/50 hover:bg-white group-hover:opacity-100"
+                        className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/85 text-ink opacity-100 shadow-md backdrop-blur-sm transition-all hover:border-teal/50 hover:bg-white sm:opacity-0 sm:group-hover:opacity-100"
                       >
                         <ChevronLeft size={20} />
                       </button>
@@ -269,7 +272,7 @@ export default function CarDetail({
                           go(1);
                         }}
                         aria-label={T.nextPhoto[lang]}
-                        className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/85 text-ink opacity-0 shadow-md backdrop-blur-sm transition-all hover:border-teal/50 hover:bg-white group-hover:opacity-100"
+                        className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/85 text-ink opacity-100 shadow-md backdrop-blur-sm transition-all hover:border-teal/50 hover:bg-white sm:opacity-0 sm:group-hover:opacity-100"
                       >
                         <ChevronRight size={20} />
                       </button>
@@ -534,26 +537,99 @@ export default function CarDetail({
             </span>
           )}
 
-          {/* Image — clicking the empty area around it closes the viewer */}
+          {/* Image + mobile arrows — clicking the empty area closes the viewer */}
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.94 }}
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            className="pointer-events-none relative flex h-full w-full items-center justify-center overflow-hidden p-6 sm:p-16"
+            className="pointer-events-none relative flex h-full w-full flex-col items-center justify-center gap-4 px-2 py-6 sm:p-16"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              key={car.images[active]}
-              src={car.images[active]}
-              alt={`${car.name} — photo ${active + 1}`}
+            {/* Image box — hugs the photo and clips the zoom overflow */}
+            <div className="flex max-h-[calc(100%-5rem)] min-h-0 items-center justify-center overflow-hidden sm:max-h-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={car.images[active]}
+                alt={`${car.name} — photo ${active + 1}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Toggle zoom, and when zooming in, zoom toward the click point.
+                  // On zoom-out we keep the same origin so the image scales back
+                  // to the exact point it grew from (no mid-animation jump).
+                  if (zoom > 1) {
+                    setZoom(1);
+                  } else {
+                    const r = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - r.left) / r.width) * 100;
+                    const y = ((e.clientY - r.top) / r.height) * 100;
+                    setOrigin(`${x}% ${y}%`);
+                    setZoom(2);
+                  }
+                }}
+                style={{ transform: `scale(${zoom})`, transformOrigin: origin }}
+                className={`pointer-events-auto max-h-full max-w-full select-none rounded-[0.7rem] object-contain shadow-2xl transition-transform duration-200 ${
+                  zoom > 1 ? "cursor-zoom-out" : "cursor-zoom-in"
+                }`}
+              />
+            </div>
+
+            {/* Toolbar directly under the photo (mobile only):
+                prev · zoom · next */}
+            <div
               onClick={(e) => e.stopPropagation()}
-              style={{ transform: `scale(${zoom})` }}
-              className="pointer-events-auto max-h-full max-w-full cursor-default select-none rounded-[0.7rem] object-contain shadow-2xl transition-transform duration-200"
-            />
+              className={`pointer-events-auto flex w-full items-center gap-3 sm:hidden ${
+                total > 1 ? "justify-between" : "justify-center"
+              }`}
+            >
+              {total > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    go(-1);
+                  }}
+                  aria-label={T.prevPhoto[lang]}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal text-white shadow-lg transition-colors hover:bg-teal-dark"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+              )}
+              <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 p-1.5 backdrop-blur-sm">
+                <button
+                  onClick={zoomOut}
+                  disabled={zoom <= 1}
+                  aria-label={T.zoomOut[lang]}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-white transition-colors hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-transparent"
+                >
+                  <ZoomOut size={19} />
+                </button>
+                <span className="min-w-[3.25rem] text-center font-heading text-sm font-semibold text-white nums">
+                  {Math.round(zoom * 100)}%
+                </span>
+                <button
+                  onClick={zoomIn}
+                  disabled={zoom >= 4}
+                  aria-label={T.zoomIn[lang]}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-white transition-colors hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-transparent"
+                >
+                  <ZoomIn size={19} />
+                </button>
+              </div>
+              {total > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    go(1);
+                  }}
+                  aria-label={T.nextPhoto[lang]}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal text-white shadow-lg transition-colors hover:bg-teal-dark"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              )}
+            </div>
           </motion.div>
 
-          {/* Prev / next — teal arrows */}
+          {/* Prev / next — desktop side arrows */}
           {total > 1 && (
             <>
               <button
@@ -562,7 +638,7 @@ export default function CarDetail({
                   go(-1);
                 }}
                 aria-label={T.prevPhoto[lang]}
-                className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-teal text-white shadow-lg transition-colors hover:bg-teal-dark"
+                className="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-xl bg-teal text-white shadow-lg transition-colors hover:bg-teal-dark sm:flex"
               >
                 <ChevronLeft size={24} />
               </button>
@@ -572,17 +648,17 @@ export default function CarDetail({
                   go(1);
                 }}
                 aria-label={T.nextPhoto[lang]}
-                className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-teal text-white shadow-lg transition-colors hover:bg-teal-dark"
+                className="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-xl bg-teal text-white shadow-lg transition-colors hover:bg-teal-dark sm:flex"
               >
                 <ChevronRight size={24} />
               </button>
             </>
           )}
 
-          {/* Zoom controls */}
+          {/* Zoom controls — desktop only (mobile has them in the toolbar) */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-white/15 bg-white/10 p-1.5 backdrop-blur-sm"
+            className="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 items-center gap-2 rounded-xl border border-white/15 bg-white/10 p-1.5 backdrop-blur-sm sm:flex"
           >
             <button
               onClick={zoomOut}

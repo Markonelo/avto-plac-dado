@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
 import { SlidersHorizontal, X, ArrowDownWideNarrow, ChevronDown, Frown } from "lucide-react";
-import { CARS } from "@/lib/cars";
+import { CARS, BODIES, type Body } from "@/lib/cars";
 import CarsFilters, { EMPTY_FILTERS, type Filters } from "./CarsFilters";
 import CarCard from "./CarCard";
 import { useLang } from "./LanguageProvider";
@@ -70,12 +70,29 @@ export default function CarsInventory() {
     return () => cancelAnimationFrame(raf);
   }, [filters, lenis]);
 
-  // Seed brand filter from ?make= (BrandsCard on the home page links here).
+  // Seed filters from the URL. The home-page hero SearchFilter and the
+  // BrandsCard both deep-link here with ?make=&body=&yearFrom=&priceFrom=&priceTo=.
   useEffect(() => {
     const make = params.get("make");
-    if (!make) return;
-    const slug = CARS.find((c) => c.make.toLowerCase() === make.toLowerCase())?.brandSlug;
-    if (slug) setFilters((f) => ({ ...f, brands: [slug] }));
+    const body = params.get("body");
+    const yearFrom = params.get("yearFrom");
+    const priceFrom = params.get("priceFrom");
+    const priceTo = params.get("priceTo");
+    if (!make && !body && !yearFrom && !priceFrom && !priceTo) return;
+    setFilters((f) => {
+      const next: Filters = { ...f };
+      if (make) {
+        const slug = CARS.find(
+          (c) => c.make.toLowerCase() === make.toLowerCase()
+        )?.brandSlug;
+        if (slug) next.brands = [slug];
+      }
+      if (body && (BODIES as string[]).includes(body)) next.bodies = [body as Body];
+      if (yearFrom) next.yearFrom = yearFrom;
+      if (priceFrom) next.priceFrom = priceFrom;
+      if (priceTo) next.priceTo = priceTo;
+      return next;
+    });
   }, [params]);
 
   const patch = (p: Partial<Filters>) => setFilters((f) => ({ ...f, ...p }));

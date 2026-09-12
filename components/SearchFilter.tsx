@@ -3,65 +3,66 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronDown } from "lucide-react";
 import { useLang } from "./LanguageProvider";
-import type { Lang } from "@/lib/i18n";
+import { tBody } from "@/lib/i18n";
+import {
+  brandsInStock,
+  BODIES,
+  CARS,
+  YEAR_MIN,
+  YEAR_MAX,
+  type Body,
+} from "@/lib/cars";
 
 // Floating search card (AEVUM style) — sits just under the hero.
-// Purely a lead-in to /cars for now; wires the chosen filters into the URL.
-// Option VALUES stay English/canonical so /cars filtering keeps matching; only
-// the visible LABELS switch language.
-const TABS = ["All", "New", "Used"] as const;
+// A lead-in to /cars: it writes the chosen filters into the URL and /cars
+// (CarsInventory) reads them on mount. All options are derived from the real
+// inventory in lib/cars.ts so the dropdowns always match the actual stock.
+// Sales-only used-car dealer, so there is no New/Used condition switch.
 
-const MAKES = ["Any Make", "Mercedes-Benz", "BMW", "Audi", "Volkswagen", "Toyota"];
-const BODIES = ["Any Type", "Hatchback", "Sedan", "SUV", "Estate", "Coupé", "Convertible", "Van"];
-const YEARS = ["Any Year", "2023", "2022", "2021", "2020", "2019", "2018"];
-const PRICES = ["Any Price", "Up to €10,000", "€10,000 – €20,000", "€20,000 – €30,000", "€30,000+"];
+// Brands actually in stock (display names, ordered by inventory count).
+const BRANDS = brandsInStock().map((b) => b.name);
+// Body types that actually appear in stock (keeps out empty categories).
+const BODY_OPTS: Body[] = BODIES.filter((b) => CARS.some((c) => c.body === b));
+// Every model year present, newest first.
+const YEARS = Array.from(
+  { length: YEAR_MAX - YEAR_MIN + 1 },
+  (_, i) => YEAR_MAX - i
+);
+// Price brackets covering the real €3,100–€8,499 range. Value = "from-to"
+// (empty side = open-ended), parsed in search().
+const PRICE_OPTS = [
+  { value: "-4000", en: "Up to €4,000", mk: "До €4.000" },
+  { value: "4000-6000", en: "€4,000 – €6,000", mk: "€4.000 – €6.000" },
+  { value: "6000-8000", en: "€6,000 – €8,000", mk: "€6.000 – €8.000" },
+  { value: "8000-", en: "€8,000+", mk: "€8.000+" },
+] as const;
 
 const T = {
-  tabs: {
-    All: { mk: "Сите", en: "All" },
-    New: { mk: "Нови", en: "New" },
-    Used: { mk: "Половни", en: "Used" },
-  },
   labels: {
     make: { mk: "Марка", en: "Make" },
     body: { mk: "Каросерија", en: "Body Type" },
-    year: { mk: "Година", en: "Year" },
+    year: { mk: "Година (од)", en: "Year (from)" },
     price: { mk: "Цена", en: "Price" },
   },
   search: { mk: "Пребарај", en: "Search" },
-  opt: {
-    "Any Make": { mk: "Сите марки", en: "Any Make" },
-    "Any Type": { mk: "Сите каросерии", en: "Any Type" },
-    Hatchback: { mk: "Хечбек", en: "Hatchback" },
-    Sedan: { mk: "Седан", en: "Sedan" },
-    SUV: { mk: "Џип", en: "SUV" },
-    Estate: { mk: "Караван", en: "Estate" },
-    "Coupé": { mk: "Купе", en: "Coupé" },
-    Convertible: { mk: "Кабриолет", en: "Convertible" },
-    Van: { mk: "Комбе", en: "Van" },
-    "Any Year": { mk: "Сите години", en: "Any Year" },
-    "Any Price": { mk: "Сите цени", en: "Any Price" },
-    "Up to €10,000": { mk: "До €10.000", en: "Up to €10,000" },
-    "€10,000 – €20,000": { mk: "€10.000 – €20.000", en: "€10,000 – €20,000" },
-    "€20,000 – €30,000": { mk: "€20.000 – €30.000", en: "€20,000 – €30,000" },
-    "€30,000+": { mk: "€30.000+", en: "€30,000+" },
-  } as Record<string, { mk: string; en: string }>,
+  anyMake: { mk: "Сите марки", en: "Any Make" },
+  anyBody: { mk: "Сите каросерии", en: "Any Type" },
+  anyYear: { mk: "Сите години", en: "Any Year" },
+  anyPrice: { mk: "Сите цени", en: "Any Price" },
 } as const;
 
-const optLabel = (o: string, lang: Lang) => T.opt[o]?.[lang] ?? o;
+type Opt = { label: string; value: string };
 
 function Select({
   label,
   options,
   value,
   onChange,
-  lang,
 }: {
   label: string;
-  options: string[];
+  options: Opt[];
   value: string;
   onChange: (v: string) => void;
-  lang: Lang;
 }) {
   return (
     <label className="group relative flex flex-1 flex-col gap-1">
@@ -75,8 +76,8 @@ function Select({
           className="w-full cursor-pointer appearance-none rounded-xl border border-line bg-surface-2 px-3.5 py-3 pr-9 font-body text-sm font-medium text-ink outline-none transition-colors hover:border-teal/50 focus:border-teal"
         >
           {options.map((o) => (
-            <option key={o} value={o}>
-              {optLabel(o, lang)}
+            <option key={o.value} value={o.value}>
+              {o.label}
             </option>
           ))}
         </select>
@@ -92,19 +93,38 @@ function Select({
 export default function SearchFilter() {
   const router = useRouter();
   const { lang } = useLang();
-  const [tab, setTab] = useState<(typeof TABS)[number]>("All");
-  const [make, setMake] = useState(MAKES[0]);
-  const [body, setBody] = useState(BODIES[0]);
-  const [year, setYear] = useState(YEARS[0]);
-  const [price, setPrice] = useState(PRICES[0]);
+  const [make, setMake] = useState("");
+  const [body, setBody] = useState("");
+  const [year, setYear] = useState("");
+  const [price, setPrice] = useState("");
+
+  const makeOpts: Opt[] = [
+    { label: T.anyMake[lang], value: "" },
+    ...BRANDS.map((b) => ({ label: b, value: b })),
+  ];
+  const bodyOpts: Opt[] = [
+    { label: T.anyBody[lang], value: "" },
+    ...BODY_OPTS.map((b) => ({ label: tBody(b, lang), value: b })),
+  ];
+  const yearOpts: Opt[] = [
+    { label: T.anyYear[lang], value: "" },
+    ...YEARS.map((y) => ({ label: String(y), value: String(y) })),
+  ];
+  const priceOpts: Opt[] = [
+    { label: T.anyPrice[lang], value: "" },
+    ...PRICE_OPTS.map((p) => ({ label: p[lang], value: p.value })),
+  ];
 
   const search = () => {
     const p = new URLSearchParams();
-    if (tab !== "All") p.set("condition", tab.toLowerCase());
-    if (make !== MAKES[0]) p.set("make", make);
-    if (body !== BODIES[0]) p.set("body", body);
-    if (year !== YEARS[0]) p.set("year", year);
-    if (price !== PRICES[0]) p.set("price", price);
+    if (make) p.set("make", make);
+    if (body) p.set("body", body);
+    if (year) p.set("yearFrom", year);
+    if (price) {
+      const [from, to] = price.split("-");
+      if (from) p.set("priceFrom", from);
+      if (to) p.set("priceTo", to);
+    }
     const q = p.toString();
     router.push(`/cars${q ? `?${q}` : ""}`);
   };
@@ -112,31 +132,13 @@ export default function SearchFilter() {
   return (
     <section className="relative z-30 -mt-20 px-4 sm:-mt-28 sm:px-6">
       <div className="container-wide !px-0">
-        <div className="rounded-[0.625rem] border border-line bg-white/90 p-4 shadow-[0_24px_60px_rgba(17,19,24,0.12)] backdrop-blur-xl sm:p-5">
-          {/* Tabs */}
-          <div className="mb-4 flex gap-1 border-b border-line pb-1">
-            {TABS.map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`relative px-4 py-2 font-heading text-sm font-medium transition-colors ${
-                  tab === t ? "text-ink" : "text-mute hover:text-ink"
-                }`}
-              >
-                {T.tabs[t][lang]}
-                {tab === t && (
-                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-teal" />
-                )}
-              </button>
-            ))}
-          </div>
-
+        <div className="rounded-[0.625rem] border border-line bg-white/90 p-6 shadow-[0_24px_60px_rgba(17,19,24,0.12)] backdrop-blur-xl sm:p-8">
           {/* Filters */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-            <Select label={T.labels.make[lang]} options={MAKES} value={make} onChange={setMake} lang={lang} />
-            <Select label={T.labels.body[lang]} options={BODIES} value={body} onChange={setBody} lang={lang} />
-            <Select label={T.labels.year[lang]} options={YEARS} value={year} onChange={setYear} lang={lang} />
-            <Select label={T.labels.price[lang]} options={PRICES} value={price} onChange={setPrice} lang={lang} />
+            <Select label={T.labels.make[lang]} options={makeOpts} value={make} onChange={setMake} />
+            <Select label={T.labels.body[lang]} options={bodyOpts} value={body} onChange={setBody} />
+            <Select label={T.labels.year[lang]} options={yearOpts} value={year} onChange={setYear} />
+            <Select label={T.labels.price[lang]} options={priceOpts} value={price} onChange={setPrice} />
             <button
               onClick={search}
               className="glow-btn !rounded-xl !px-6 !py-3 sm:w-auto"

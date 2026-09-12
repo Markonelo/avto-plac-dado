@@ -235,7 +235,7 @@ export default function ContactHero() {
                         required
                         value={form.firstName}
                         onChange={set("firstName")}
-                        placeholder="Marko"
+                        placeholder="Dimitar"
                         className={INPUT}
                       />
                     </FloatingField>

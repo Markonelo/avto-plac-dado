@@ -14,11 +14,13 @@ const T = {
 export default function LegalPage({
   title,
   updated,
-  children,
+  mk,
+  en,
 }: {
-  title: string;
-  updated: string;
-  children: React.ReactNode;
+  title: { mk: string; en: string };
+  updated: { mk: string; en: string };
+  mk: React.ReactNode;
+  en: React.ReactNode;
 }) {
   const { lang } = useLang();
   return (
@@ -33,14 +35,14 @@ export default function LegalPage({
             </span>
 
             <h1 className="mt-6 font-heading text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
-              {title}
+              {title[lang]}
             </h1>
             <p className="mt-4 font-body text-sm text-mute">
-              {T.lastUpdated[lang]} {updated}
+              {T.lastUpdated[lang]} {updated[lang]}
             </p>
 
             <div className="mt-10 space-y-5 font-body text-base leading-relaxed text-mute [&_a]:text-teal-dark [&_a]:underline [&_h2:first-of-type]:mt-0 [&_h2]:mt-10 [&_h2]:font-heading [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-ink [&_li]:marker:text-teal [&_strong]:text-ink-soft [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5">
-              {children}
+              {lang === "mk" ? mk : en}
             </div>
           </div>
         </div>

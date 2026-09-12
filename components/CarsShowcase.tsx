@@ -148,10 +148,10 @@ export default function CarsShowcase() {
 
         {/* Car stage — coverflow: all cars slide between left / centre / right
             slots as one motion, so neighbours glide into place. */}
-        <div className="relative mt-8 h-72 sm:h-96 lg:mt-4 lg:h-[38rem]">
+        <div className="relative mt-2 h-[26rem] sm:mt-8 sm:h-96 lg:mt-4 lg:h-[38rem]">
           {/* Ground shadow at the shared baseline (grounds the cropped PNGs) */}
-          <div className="pointer-events-none absolute bottom-[4%] left-1/2 z-0 h-7 w-[58%] -translate-x-1/2 rounded-[50%] bg-ink/45 blur-2xl sm:h-9" />
-          <div className="pointer-events-none absolute bottom-[5%] left-1/2 z-0 h-4 w-[36%] -translate-x-1/2 rounded-[50%] bg-ink/40 blur-xl" />
+          <div className="pointer-events-none absolute bottom-[26%] left-1/2 z-0 h-7 w-[58%] -translate-x-1/2 rounded-[50%] bg-ink/45 blur-2xl sm:bottom-[4%] sm:h-9" />
+          <div className="pointer-events-none absolute bottom-[27%] left-1/2 z-0 h-4 w-[36%] -translate-x-1/2 rounded-[50%] bg-ink/40 blur-xl sm:bottom-[5%]" />
 
           {/* Animated cars (visual only — clicks handled by the edge zones) */}
           {CARS.map((c, idx) => {
@@ -177,7 +177,7 @@ export default function CarsShowcase() {
                   ease: [0.22, 1, 0.36, 1],
                   opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
                 }}
-                className="pointer-events-none absolute inset-0 flex items-end justify-center px-4 pb-[6%]"
+                className="pointer-events-none absolute inset-0 flex items-center justify-center px-4 pb-0 sm:items-end sm:pb-[6%]"
               >
                 <FallbackImage
                   src={c.image}

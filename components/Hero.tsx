@@ -21,12 +21,14 @@ const T = {
 type HeroSlide = {
   name: string;
   image: string;
+  imageMobile?: string;
 };
 
 const SLIDES: HeroSlide[] = [
   {
     name: "Citroën C4 Cactus",
     image: "/hero-home-1.png",
+    imageMobile: "/hero-home-mobile.png",
   },
 ];
 
@@ -60,11 +62,22 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="absolute inset-0"
           >
+            {/* Desktop / tablet scene */}
             <FallbackImage
               src={slide.image}
               alt={slide.name}
-              className="absolute inset-0 h-full w-full object-cover object-center"
+              className={`absolute inset-0 h-full w-full object-cover object-center ${
+                slide.imageMobile ? "hidden sm:block" : ""
+              }`}
             />
+            {/* Mobile-only scene */}
+            {slide.imageMobile && (
+              <FallbackImage
+                src={slide.imageMobile}
+                alt={slide.name}
+                className="absolute inset-0 h-full w-full object-cover object-center sm:hidden"
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 

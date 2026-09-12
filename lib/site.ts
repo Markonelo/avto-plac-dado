@@ -13,8 +13,6 @@ export const SITE = {
   addressHq: "Ordan Nikolov 64, Bitola",
   hours: "Mon–Fri 10:30–17:00 · Sat 10:30–18:00 · Sun Closed",
   url: "https://avtoplacdado.com",
-  // Social — swap for the client's real profiles.
-  facebook: "https://facebook.com",
-  instagram: "https://instagram.com",
-  x: "https://x.com",
+  // Social — the client only has Facebook.
+  facebook: "https://www.facebook.com/avtoplac.dado.bitola",
 };

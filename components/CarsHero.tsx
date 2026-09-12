@@ -95,7 +95,7 @@ export default function CarsHero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.18, ease: "easeOut" }}
-              className="mt-8 flex items-center gap-8 sm:gap-10"
+              className="mt-8 flex items-start justify-center gap-6 sm:gap-10"
             >
               <div className="text-center">
                 <p className="font-heading text-4xl font-semibold text-ink nums sm:text-5xl">
