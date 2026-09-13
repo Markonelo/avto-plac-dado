@@ -104,6 +104,18 @@ export default function Hero() {
             <br />
             {T.headline2[lang]}
           </motion.h1>
+
+          {/* Mobile tagline — directly under the heading, over the darker sky
+              so the full sentence is visible and doesn't collide with the
+              search card that overlaps the hero's bottom edge. */}
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.14, ease: "easeOut" }}
+            className="mx-auto mt-5 max-w-sm font-body text-[15px] font-normal leading-relaxed text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.85)] lg:hidden"
+          >
+            {T.tagline[lang]}
+          </motion.p>
         </div>
 
         {/* Tagline — right, vertically centred (where the spec card was) */}
@@ -116,13 +128,6 @@ export default function Hero() {
           >
             {T.tagline[lang]}
           </motion.p>
-        </div>
-
-        {/* Mobile tagline (under the heading) */}
-        <div className="absolute inset-x-0 bottom-16 z-20 flex flex-col items-center px-6 lg:hidden">
-          <p className="max-w-xs text-center font-body text-sm font-light leading-relaxed text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)]">
-            {T.tagline[lang]}
-          </p>
         </div>
 
         {/* ── Carousel dots (bottom-centre) ──────────────────────────── */}
