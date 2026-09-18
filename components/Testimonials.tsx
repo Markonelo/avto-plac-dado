@@ -195,7 +195,8 @@ export default function Testimonials() {
                         ? { color: "var(--color-teal)" }
                         : {
                             color: "transparent",
-                            WebkitTextStroke: "1px var(--color-teal)",
+                            WebkitTextStroke: "0.75px var(--color-teal)",
+                            paintOrder: "stroke",
                           }
                     }
                   >
