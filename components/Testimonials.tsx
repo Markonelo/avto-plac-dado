@@ -194,9 +194,15 @@ export default function Testimonials() {
                       n % 2 === 0
                         ? { color: "var(--color-teal)" }
                         : {
-                            color: "transparent",
-                            WebkitTextStroke: "0.75px var(--color-teal)",
-                            paintOrder: "stroke",
+                            // A lighter teal tint for alternate words. We used to
+                            // render these hollow via -webkit-text-stroke, but
+                            // Manrope's glyphs are built from overlapping contours
+                            // (e.g. the "A" crossbar is a separate bar over the
+                            // legs), so an outline exposed those internal edges as
+                            // ugly crossing lines. A flat tint keeps the two-tone
+                            // rhythm with no artifacts.
+                            color:
+                              "color-mix(in srgb, var(--color-teal) 30%, transparent)",
                           }
                     }
                   >
