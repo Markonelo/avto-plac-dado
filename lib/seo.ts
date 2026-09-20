@@ -21,9 +21,10 @@ const SITE_NAME = SITE.name; // Avto Plac Dado
 const NAME_CYR = SITE.nameCyrillic; // Авто Плац Дадо
 
 const DEFAULT_DESCRIPTION =
-  "Авто Плац Дадо — автосалон во Битола. Широк избор на половни автомобили " +
-  "по фер цени, со комплетна документација и подготвени за регистрација. " +
-  "Најдете го вашиот следен автомобил во Битола.";
+  "Авто Плац Дадо (ДООЕЛ МОБС 2013 / DOOEL MOBS 2013) — автосалон во Битола. " +
+  "Широк избор на половни автомобили по фер цени, со комплетна документација " +
+  "и подготвени за регистрација. Официјално регистрирана компанија ДООЕЛ МОБС " +
+  "2013. Најдете го вашиот следен автомобил во Битола.";
 
 const KEYWORDS = [
   "автосалон Битола",
@@ -35,6 +36,13 @@ const KEYWORDS = [
   "половни возила Македонија",
   "автосалон Пелагонија",
   "Авто Плац Дадо",
+  // Registered legal entity — the client wants the official company name to
+  // rank for branded searches (both Cyrillic and Latin spellings).
+  "ДООЕЛ МОБС 2013",
+  "МОБС 2013",
+  "Авто Плац Дадо ДООЕЛ МОБС 2013",
+  "DOOEL MOBS 2013",
+  "MOBS 2013",
   "avto plac Bitola",
   "avtosalon Bitola",
   "polovni avtomobili Bitola",
@@ -147,7 +155,14 @@ export function localBusinessSchema() {
     "@context": "https://schema.org",
     "@type": ["AutoDealer", "LocalBusiness"],
     name: NAME_CYR,
-    alternateName: SITE_NAME,
+    // Client requirement: surface the registered legal entity strongly for
+    // branded searches. List every spelling Google might see.
+    alternateName: [
+      SITE_NAME,
+      "ДООЕЛ МОБС 2013",
+      "DOOEL MOBS 2013",
+      `${NAME_CYR} ДООЕЛ МОБС 2013`,
+    ],
     legalName: SITE.legalName,
     url: BASE_URL,
     telephone: SITE.phoneHref.replace("tel:", ""),

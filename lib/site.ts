@@ -2,7 +2,7 @@
 export const SITE = {
   name: "Avto Plac Dado",
   nameCyrillic: "Авто Плац Дадо",
-  legalName: "Дооел МОБС 2013", // official registered entity — used in fine print only
+  legalName: "ДООЕЛ МОБС 2013", // official registered entity (shown in footer + schema)
   tagline: "Trusted car dealership in Bitola",
   city: "Bitola",
   country: "North Macedonia",

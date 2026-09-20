@@ -176,7 +176,7 @@ export default function Footer() {
           <div className="mt-10 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-6 sm:flex-row">
             <div className="text-center sm:text-left">
               <p className="font-body text-sm text-white/50">
-                © {new Date().getFullYear()} {SITE.legalName}. {T.rights[lang]}
+                © {new Date().getFullYear()} {SITE.nameCyrillic} · {SITE.legalName} (DOOEL MOBS 2013). {T.rights[lang]}
               </p>
               <p className="mt-1.5 font-body text-xs text-white/35">
                 {T.madeBy[lang]}{" "}
