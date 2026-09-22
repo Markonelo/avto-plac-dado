@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Reveal from "./Reveal";
 import FallbackImage from "./FallbackImage";
 import { useLang } from "./LanguageProvider";
+import { brandsInStock } from "@/lib/cars";
 
 const T = {
   kicker: { mk: "најдете ја вашата марка", en: "Find your fit" },
@@ -27,30 +28,32 @@ const T = {
 // padding (measured once from each logo's opaque bounding box).
 type Brand = { name: string; slug: string; count: number; scale?: number };
 
-const BRANDS: Brand[] = [
-  { name: "Peugeot", slug: "peugeot", count: 4, scale: 1.39 },
-  { name: "Hyundai", slug: "hyundai", count: 4, scale: 1.12 },
-  { name: "Renault", slug: "renault", count: 4, scale: 1.17 },
-  { name: "Audi", slug: "audi", count: 3, scale: 1 },
-  { name: "Citroën", slug: "citroen", count: 2, scale: 0.98 },
-  { name: "Fiat", slug: "fiat", count: 2, scale: 1.6 },
-  { name: "Opel", slug: "opel", count: 2, scale: 1.6 },
-  { name: "Seat", slug: "seat", count: 2, scale: 1 },
-  { name: "Nissan", slug: "nissan", count: 2, scale: 1.14 },
-  { name: "Volkswagen", slug: "volkswagen", count: 2, scale: 1.15 },
-  { name: "Mazda", slug: "mazda", count: 1, scale: 1 },
-  { name: "Dacia", slug: "dacia", count: 1, scale: 1.53 },
-  { name: "BMW", slug: "bmw", count: 1, scale: 0.98 },
-  { name: "Lancia", slug: "lancia", count: 1, scale: 1.6 },
-  { name: "Chevrolet", slug: "chevrolet", count: 1, scale: 1.05 },
-  { name: "Kia", slug: "kia", count: 1, scale: 1.31 },
-  { name: "Ford", slug: "ford", count: 1, scale: 1.01 },
-];
+// Optical scale per logo PNG (measured once from each mark's opaque bounding box).
+const SCALE: Record<string, number> = {
+  peugeot: 1.39, hyundai: 1.12, renault: 1.17, audi: 1, citroen: 0.98,
+  fiat: 1.6, opel: 1.6, seat: 1, nissan: 1.14, volkswagen: 1.15, mazda: 1,
+  dacia: 1.53, bmw: 0.98, lancia: 1.6, chevrolet: 1.05, kia: 1.31, ford: 1.01,
+  suzuki: 1,
+};
+
+// Counts are derived from live inventory so the card never goes stale on a
+// daily inventory sync (brandsInStock() is sorted by count desc, then name).
+const BRANDS: Brand[] = brandsInStock().map((b) => ({
+  name: b.name,
+  slug: b.slug,
+  count: b.count,
+  scale: SCALE[b.slug] ?? 1,
+}));
 
 export default function BrandsCard() {
   const router = useRouter();
   const { lang } = useLang();
   const [active, setActive] = useState(0); // first brand highlighted by default
+
+  // On the lg 6-col grid, optically centre the final row only when it is short
+  // by exactly one tile (5 of 6) — otherwise leave rows flush.
+  const lastRowShift =
+    BRANDS.length % 6 === 5 ? BRANDS.length - 5 : -1;
 
   const pick = (b: Brand, n: number) => {
     setActive(n);
@@ -85,7 +88,9 @@ export default function BrandsCard() {
                   onClick={() => pick(b, n)}
                   aria-label={`${b.name} — ${b.count} ${T.cars[lang]}`}
                   className={`group flex flex-col items-center justify-center gap-3 rounded-2xl border px-4 py-6 text-center transition-all duration-300 hover:-translate-y-0.5 ${
-                    n >= 12 ? "lg:translate-x-[calc(50%+0.5rem)]" : ""
+                    lastRowShift >= 0 && n >= lastRowShift
+                      ? "lg:translate-x-[calc(50%+0.5rem)]"
+                      : ""
                   } ${
                     on
                       ? "border-teal/50 bg-[#F6F0E4] shadow-[0_14px_30px_rgba(17,19,24,0.08)]"
