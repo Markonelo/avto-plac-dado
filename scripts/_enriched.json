@@ -1475,48 +1475,6 @@
     ]
   },
   {
-    "id": "hyundai-ix35-2012",
-    "adId": "5848591",
-    "name": "Hyundai IX35",
-    "make": "Hyundai",
-    "brandSlug": "hyundai",
-    "model": "IX35",
-    "price": 8499,
-    "year": 2012,
-    "mileage": 200000,
-    "fuel": "Diesel",
-    "transmission": "Manual",
-    "body": "SUV",
-    "power": "85 kW / 116 hp",
-    "hp": 116,
-    "color": "Brown",
-    "euro": "Euro 5",
-    "registration": "Macedonian, registered until 09.2026",
-    "features": [
-      "Air conditioning",
-      "Alloy wheels",
-      "ABS",
-      "Electric windows",
-      "Central locking",
-      "Power steering",
-      "Two keys",
-      "Airbags",
-      "Full service history"
-    ],
-    "description": "This 2012 Hyundai IX35 runs a 1.7-litre diesel engine producing 85 kW / 116 hp, paired with a manual gearbox, and has covered 200,000 km with full service history. Finished in brown, it is presented in excellent mechanical and technical condition — engine, body and interior all like new — with complete documentation prepared and ready for registration. Euro 5 compliant.",
-    "photos": [
-      "a32488b8-7dc0-47a1-b8d5-4fea8c46feab",
-      "77078307-1c63-479e-a9b9-1ad5bc1c8cda",
-      "6a28174c-2753-4724-9637-f06ce8b332ca",
-      "f7323ccd-20a0-46c6-bed1-8bcd847e40e3",
-      "e2e57794-7add-4c6c-8956-98d07414b096",
-      "e160775c-63c8-4bbc-a7e4-6bc9346353c7",
-      "f1bcff9a-ee4d-406f-b761-c2d47d92a435",
-      "6cd29bbc-dc34-4bcb-810a-ed5e1d2f4621",
-      "4a7636df-f2f7-4bd0-a943-abd07014a550"
-    ]
-  },
-  {
     "id": "citroen-c3-2011",
     "adId": "5837482",
     "name": "Citroën C3",
