@@ -23,6 +23,8 @@ const BRAND_SLUGS = [
   "chevrolet",
   "lancia",
   "suzuki",
+  "toyota",
+  "honda",
 ];
 
 export default function BrandsMarquee() {

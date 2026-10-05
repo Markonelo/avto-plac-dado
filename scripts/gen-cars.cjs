@@ -114,6 +114,8 @@ export const BRAND_META: Record<string, { name: string; scale: number }> = {
   kia: { name: "Kia", scale: 1.31 },
   ford: { name: "Ford", scale: 1.01 },
   suzuki: { name: "Suzuki", scale: 1 },
+  toyota: { name: "Toyota", scale: 1.3 },
+  honda: { name: "Honda", scale: 1 },
 };
 
 export const BODIES: Body[] = [

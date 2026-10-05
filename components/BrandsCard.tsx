@@ -33,7 +33,7 @@ const SCALE: Record<string, number> = {
   peugeot: 1.39, hyundai: 1.12, renault: 1.17, audi: 1, citroen: 0.98,
   fiat: 1.6, opel: 1.6, seat: 1, nissan: 1.14, volkswagen: 1.15, mazda: 1,
   dacia: 1.53, bmw: 0.98, lancia: 1.6, chevrolet: 1.05, kia: 1.31, ford: 1.01,
-  suzuki: 1,
+  suzuki: 1, toyota: 1.3, honda: 1,
 };
 
 // Counts are derived from live inventory so the card never goes stale on a
