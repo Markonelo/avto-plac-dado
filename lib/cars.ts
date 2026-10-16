@@ -846,6 +846,31 @@ export const CARS: Car[] = [
       "This 2017 Nissan Qashqai is powered by a 1.6-litre dCi diesel engine producing 96 kW / 131 hp, paired with a manual gearbox, and has covered 200,000 km. Finished in brown, this facelift-generation crossover offers raised SUV comfort, generous space and economical diesel running costs, and is presented in excellent condition with Macedonian registration valid until 10.2026. Euro 6 compliant.",
     images: ["/cars/nissan-qashqai-2017/01.jpg", "/cars/nissan-qashqai-2017/02.jpg", "/cars/nissan-qashqai-2017/03.jpg", "/cars/nissan-qashqai-2017/04.jpg", "/cars/nissan-qashqai-2017/05.jpg", "/cars/nissan-qashqai-2017/06.jpg", "/cars/nissan-qashqai-2017/07.jpg", "/cars/nissan-qashqai-2017/08.jpg", "/cars/nissan-qashqai-2017/09.jpg", "/cars/nissan-qashqai-2017/10.jpg"],
     image: "/cars/nissan-qashqai-2017/01.jpg",
+  },
+  {
+    id: "renault-captur-2020",
+    adId: "5870899",
+    name: "Renault Captur",
+    make: "Renault",
+    brandSlug: "renault",
+    model: "Captur",
+    price: 11700,
+    year: 2020,
+    mileage: 170000,
+    fuel: "Diesel",
+    transmission: "Manual",
+    body: "SUV",
+    power: "66 kW / 90 hp",
+    hp: 90,
+    color: "White",
+    euro: "Euro 6",
+    registration: "Macedonian, registered until 05.2027",
+    rating: 4.6,
+    features: ["Climate control", "Cruise control", "Navigation", "Rear-view camera", "Parking sensors", "Trip computer", "Fog lights", "Power steering", "ABS", "Electric windows", "Central locking", "Two keys", "8 airbags", "AUX / USB / ISOFIX", "Full service history"],
+    description:
+      "This 2020 Renault Captur is powered by a 1.5-litre dCi diesel engine producing 66 kW / 90 hp, paired with a manual gearbox, and has covered 170,000 km with full service history. Finished in white, this facelift-generation compact crossover is exceptionally well equipped — satellite navigation, reversing camera, climate control, cruise control, parking sensors and eight airbags — and is presented in excellent mechanical condition with Macedonian registration valid until 05.2027 (green card included). Euro 6 compliant.",
+    images: ["/cars/renault-captur-2020/01.jpg", "/cars/renault-captur-2020/02.jpg", "/cars/renault-captur-2020/03.jpg", "/cars/renault-captur-2020/04.jpg", "/cars/renault-captur-2020/05.jpg", "/cars/renault-captur-2020/06.jpg", "/cars/renault-captur-2020/07.jpg", "/cars/renault-captur-2020/08.jpg", "/cars/renault-captur-2020/09.jpg", "/cars/renault-captur-2020/10.jpg", "/cars/renault-captur-2020/11.jpg"],
+    image: "/cars/renault-captur-2020/01.jpg",
   }
 ];
 
