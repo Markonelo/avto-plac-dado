@@ -1106,36 +1106,6 @@
     "photos": []
   },
   {
-    "id": "opel-corsa-c-2007",
-    "adId": "5861336",
-    "name": "Opel Corsa",
-    "make": "Opel",
-    "brandSlug": "opel",
-    "model": "Corsa",
-    "price": 3100,
-    "year": 2007,
-    "mileage": 170000,
-    "fuel": "Petrol",
-    "transmission": "Manual",
-    "body": "Hatchback",
-    "power": "59 kW / 80 hp",
-    "hp": 80,
-    "color": "Blue",
-    "euro": "Euro 4",
-    "registration": "Macedonian, registered until 10.2027",
-    "features": [
-      "Air conditioning",
-      "Power steering",
-      "ABS",
-      "Electric windows",
-      "Central locking",
-      "Front airbags",
-      "Radio"
-    ],
-    "description": "This 2007 Opel Corsa runs a 1.2-litre petrol engine producing 59 kW / 80 hp, paired with a manual gearbox, and has covered 170,000 km. Finished in blue, it is a compact and economical hatchback presented in good condition, with Macedonian registration valid until 10.2027. Euro 4 compliant.",
-    "photos": []
-  },
-  {
     "id": "honda-civic-2009",
     "adId": "5861329",
     "name": "Honda Civic",
